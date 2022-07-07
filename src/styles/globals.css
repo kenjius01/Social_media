@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        /* font-family:  'Patrick Hand', cursive;
+        font-family: 'Lora', serif; */
+        font-family: 'Inter', sans-serif;
+    }
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 0.5rem;
+    background: linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%);
+    transition: all 0.2s ease-out;
+}
+
+.button:hover {
+    color: #fca61f;
+    background: transparent;
+    border: 2px solid #fca61f;
+}
