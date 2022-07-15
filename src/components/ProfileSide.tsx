@@ -1,16 +1,18 @@
-import React from 'react'
-import FollowersCard from './FollowersCard'
-import LogoSearch from './LogoSearch'
-import ProfileCard from './ProfileCard'
+import React from 'react';
+import FollowersCard from './FollowersCard';
+import LogoSearch from './LogoSearch';
+import ProfileCard from './ProfileCard';
 
 const ProfileSide = () => {
-  return (
-    <div className="profileSide flex-[3] flex flex-col gap-4 items-center overflow-hidden">
-      <LogoSearch/>
-      <ProfileCard/>
-      <FollowersCard/>
-    </div>
-  )
-}
+    return (
+        <div className='flex flex-col items-center gap-4 mt-3 overflow-hidden profileSide'>
+            <LogoSearch />
+            <div className='w-3/4 mt-4 prfCard'>
+                <ProfileCard isProfilePage={false}/>
+            </div>
+            <FollowersCard />
+        </div>
+    );
+};
 
-export default ProfileSide
+export default ProfileSide;

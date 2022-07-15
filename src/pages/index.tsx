@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import PostSide from '../components/PostSide/PostSide';
 import ProfileSide from '../components/ProfileSide';
+import RightSide from '../components/RightSide/RightSide';
 
 const Home: NextPage = () => {
     return (
@@ -14,13 +16,13 @@ const Home: NextPage = () => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
 
-            <main className='app overflow-hidden text-primary-black bg-[#f3f3f3] p-4 '>
+            <main className='app overflow-hidden text-primary-black bg-[#f3f3f3] pt-4 '>
                 <div className='blur-3xl absolute w-80 h-56 bg-[#a6ddf0] rounded-[50%] top-[-18%] right-0'></div>
                 <div className='blur-3xl absolute w-80 h-56 bg-[#a6ddf0] rounded-[50%] top-[36%] left-[8rem]'></div>
-                <div className='relative grid-cols-[20rem_auto_20rem] grid gap-4 Home'>
+                <div className='relative grid-cols-[25%_45%_30%] grid gap-4 Home'>
                     <ProfileSide/>
-                    <div className='postSide '>post</div>
-                    <div className='rightSide'>rightside</div>
+                    <PostSide/>
+                    <RightSide/>
                 </div>
             </main>
         </div>
