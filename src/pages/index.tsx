@@ -1,10 +1,20 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PostSide from '../components/PostSide/PostSide';
 import ProfileSide from '../components/ProfileSide';
 import RightSide from '../components/RightSide/RightSide';
 
 const Home: NextPage = () => {
+    const router = useRouter()
+    const user = useSelector((state:any) => state.authReducer.authData)
+    useEffect(() => {
+        if(!user){
+            router.push('/signin')
+        } 
+    },[router, user])
     return (
         <div className='main'>
             <Head>

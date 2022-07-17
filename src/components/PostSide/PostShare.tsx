@@ -1,22 +1,30 @@
 import Image from 'next/image';
-import React, { ChangeEvent, SyntheticEvent, useRef, useState } from 'react';
-import ProfileImg from '../../img/profileImg.jpg';
+import React, { useRef, useState } from 'react';
+import avt from '../../img/avt.jpg';
 import { BsFillImageFill } from 'react-icons/bs';
 import { RiVideoAddFill } from 'react-icons/ri';
 import { ImLocation2 } from 'react-icons/im';
 import { FaTimes } from 'react-icons/fa';
 
 import { MdOutlineInsertEmoticon } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { uploadPost } from '../../actions/PostAction';
 
 const PostShare = () => {
+    const uploading = useSelector((state: any) => state.postReducer.uploading);
+    const dispatch = useDispatch();
     const [image, setImage] = useState<{ image: any }>();
+    // const imageRef = useRef();
+    const desc = useRef<any>();
+    const user = useSelector((state: any) => state.authReducer.authData);
     const imgRef = useRef(null);
 
     const onImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
             setImage({
-                image: URL.createObjectURL(img),
+                image: img,
             });
         }
     };
@@ -26,19 +34,52 @@ const PostShare = () => {
         element.click();
     };
 
+    const handleShare = async () => {
+        const newPost = {
+            userId: user.id,
+            desc: desc.current.value,
+            image: '',
+        };
+        if (image) {
+            const data = new FormData();
+            data.append('file', image.image);
+            data.append('upload_preset', 'upload');
+            try {
+                const uploadRes = await axios.post(
+                    'https://api.cloudinary.com/v1_1/ktdev/image/upload',
+                    data
+                );
+                const { url } = await uploadRes.data;
+                newPost.image = url;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        dispatch(uploadPost(newPost) as any);
+        resetShare();
+    };
+    // Reset Post Share
+    const resetShare = () => {
+        setImage({ image: null });
+        desc.current.value = '';
+    };
+
     return (
         <div className='flex justify-center gap-4 p-4 mb-6 postShare bg-card-color rounded-2xl'>
             <div className='postImg'>
                 <Image
-                    src={ProfileImg}
+                    src={user?.avatar || avt}
                     width='48px'
                     height='48px'
                     alt='avt'
                     className='object-cover rounded-full'
+                    priority
                 />
             </div>
             <div className=' flex flex-col w-[80%]'>
                 <input
+                    ref={desc}
+                    required
                     type='text'
                     placeholder="What's do you think?"
                     className='p-3 text-lg border-none outline-none bg-input-color rounded-xl'
@@ -63,8 +104,12 @@ const PostShare = () => {
                         <MdOutlineInsertEmoticon className='text-shedule-color' />
                         Emotion
                     </div>
-                    <button className='w-24 h-10 px-5 mt-3 text-base rounded-xl button'>
-                        Share
+                    <button
+                        onClick={handleShare}
+                        className='w-24 h-10 px-5 mt-3 text-base rounded-xl button'
+                        disabled={uploading}
+                    >
+                        {uploading ? 'Uploading...' : 'Share'}
                     </button>
                     <div className='hidden'>
                         <input
@@ -86,10 +131,11 @@ const PostShare = () => {
                             <Image
                                 width='100%'
                                 height='80%'
-                                src={image.image}
+                                src={URL.createObjectURL(image.image)}
                                 alt='img'
                                 className='object-contain'
                                 layout='responsive'
+                                priority
                             />
                         </div>
                     </div>

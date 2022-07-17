@@ -25,6 +25,11 @@
     border: 2px solid #fca61f;
 }
 
+.button:disabled {
+    background: silver;
+    cursor: not-allowed;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }

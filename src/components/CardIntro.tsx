@@ -1,35 +1,24 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getNumFollows } from '../api/UserRequest';
 import Cover from '../img/cover.jpg';
 import avt from '../img/avt.jpg';
-import { getNumFollows, getUserInfo } from '../api/UserRequest';
-import { PostResponse, Userinfo } from '../pb/apiservice';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
-const ProfileCard = () => {
-    const router = useRouter();
-    const [userInfo, setUserInfo] = useState<Userinfo>();
+const CardIntro = () => {
+    const user = useSelector((state: any) => state.authReducer.authData);
     const [numFollower, setNumFollower] = useState<string>();
     const [numFollowing, setNumFollowing] = useState<string>();
-    const posts = useSelector((state: any) => state.postReducer.posts);
-    const { id } = router.query;
-
+    const router = useRouter();
     useEffect(() => {
-        if (router.isReady) {
-            getUserInfo(Number(id))
-                .then((res) => {
-                    setUserInfo(res);
-                })
-                .catch(() => router.push('/notfound'));
-            getNumFollows(Number(id))
-                .then((res) => {
-                    setNumFollower(res.numberFollower);
-                    setNumFollowing(res.numberFollowing);
-                })
-                .catch((error) => console.log(error));
-        }
-    }, [id, router]);
+        getNumFollows(Number(user?.id))
+            .then((res) => {
+                setNumFollower(res.numberFollower);
+                setNumFollowing(res.numberFollowing);
+            })
+            .catch((error) => console.log(error));
+    }, [user?.id]);
 
     return (
         <div className='relative flex flex-col w-full overflow-auto profileCard bg-card-color rounded-3xl'>
@@ -39,7 +28,7 @@ const ProfileCard = () => {
                         width={'100%'}
                         height='50%'
                         layout='responsive'
-                        src={userInfo?.coverImg || Cover}
+                        src={user?.coverImg || Cover}
                         className='object-cover'
                         priority
                         alt='cover'
@@ -50,7 +39,7 @@ const ProfileCard = () => {
                         width='100%'
                         height={'100%'}
                         layout='responsive'
-                        src={userInfo?.avatar || avt}
+                        src={user?.avatar || avt}
                         alt='profile'
                         priority
                         className='rounded-full '
@@ -58,8 +47,8 @@ const ProfileCard = () => {
                 </div>
             </div>
             <div className='flex flex-col items-center gap-2 profileName'>
-                <span className='font-bold '>{`${userInfo?.firstName} ${userInfo?.lastName}`}</span>
-                <span>{userInfo?.desc}</span>
+                <span className='font-bold '>{`${user?.firstName} ${user?.lastName}`}</span>
+                <span>{user?.desc}</span>
             </div>
 
             <div className='flex flex-col items-center justify-center gap-3 followStatus'>
@@ -78,24 +67,17 @@ const ProfileCard = () => {
                             Followers
                         </span>
                     </div>
-
-                    <div className='h-12 border-l-2 vl border-hr-color'></div>
-                    <div className='flex flex-col items-center justify-center gap-2 follow'>
-                        <span className='font-bold'>
-                            {
-                                posts.filter(
-                                    (post: PostResponse) =>
-                                        post.userId === Number(id)
-                                ).length
-                            }
-                        </span>
-                        <span className='text-xs text-primary-gray'>Posts</span>
-                    </div>
                 </div>
                 <hr className='w-[85%] border-hr-color mb-3' />
             </div>
+            <span
+                onClick={() => router.push(`/profile/${user.id}`)}
+                className='self-center mb-4 font-bold text-orange-400 cursor-pointer'
+            >
+                My Profile
+            </span>
         </div>
     );
 };
 
-export default ProfileCard;
+export default CardIntro;

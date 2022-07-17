@@ -4,7 +4,7 @@ import { Followers } from '../data/FollowersData';
 const FollowersCard = () => {
     return (
         <div className='flex flex-col w-3/4 gap-4 text-base followerCard rounded-xl'>
-            <h3 className='font-bold'>Who is following you?</h3>
+            <h3 className='font-bold'>Followers</h3>
             {Followers.map((follow, index) => (
                 <div
                     key={index}
@@ -25,7 +25,9 @@ const FollowersCard = () => {
                             <span>{follow.username}</span>
                         </div>
                     </div>
-                    <button className='px-5 rounded-lg h-9 button'>Follow</button>
+                    <button className='w-20 rounded-lg h-9 button'>
+                        Follow
+                    </button>
                 </div>
             ))}
         </div>
