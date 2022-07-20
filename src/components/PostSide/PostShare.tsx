@@ -12,7 +12,7 @@ import axios from 'axios';
 import { uploadPost } from '../../actions/PostAction';
 
 const PostShare = () => {
-    const uploading = useSelector((state: any) => state.postReducer.uploading);
+    const [uploading, setUploading] = useState(false);
     const dispatch = useDispatch();
     const [image, setImage] = useState<{ image: any }>();
     // const imageRef = useRef();
@@ -35,6 +35,7 @@ const PostShare = () => {
     };
 
     const handleShare = async () => {
+        setUploading(true)
         const newPost = {
             userId: user.id,
             desc: desc.current.value,
@@ -56,6 +57,7 @@ const PostShare = () => {
             }
         }
         dispatch(uploadPost(newPost) as any);
+        setUploading(false)
         resetShare();
     };
     // Reset Post Share
