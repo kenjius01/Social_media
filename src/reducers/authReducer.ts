@@ -1,16 +1,15 @@
-
 const authReducer = (
-    state = { authData: null, loading: false, error: false },
+    state = { authData: null, uploading: false, loading: false, error: false },
     action: any
 ) => {
     switch (action.type) {
         case 'AUTH_START':
             return { ...state, loading: true, error: false };
         case 'AUTH_SUCCESS':
-            localStorage.setItem(
-                'profile',
-                JSON.stringify({ ...action?.data })
-            );
+            // localStorage.setItem(
+            //     'profile',
+            //     JSON.stringify({ ...action?.data })
+            // );
             return {
                 ...state,
                 authData: action.data,
@@ -27,6 +26,17 @@ const authReducer = (
                 authData: null,
                 loading: false,
             };
+        case 'UPDATE_START':
+            return { ...state, uploading: true, error: false };
+        case 'UPDATE_SUCCESS':
+            return {
+                ...state,
+                authData: action.data,
+                uploading: false,
+                error: false,
+            };
+        case 'UPDATE_FAIL':
+            return { ...state, uploading: false, error: true };
         default:
             return state;
     }

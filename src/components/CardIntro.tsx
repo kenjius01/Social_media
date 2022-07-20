@@ -28,7 +28,7 @@ const CardIntro = () => {
                         width={'100%'}
                         height='50%'
                         layout='responsive'
-                        src={user?.coverImg || Cover}
+                        src={user?.coverImg ? user.coverImg : Cover}
                         className='object-cover'
                         priority
                         alt='cover'
@@ -39,7 +39,7 @@ const CardIntro = () => {
                         width='100%'
                         height={'100%'}
                         layout='responsive'
-                        src={user?.avatar || avt}
+                        src={user?.avatar ? user?.avatar : avt}
                         alt='profile'
                         priority
                         className='rounded-full '

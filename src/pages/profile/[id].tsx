@@ -16,7 +16,7 @@ const ProfilePage = () => {
         if (!user) {
             router.push('/signin');
         }
-        if (user.id != id) {
+        if (user?.id != id) {
             setIsYourPage(false);
         }
     }, [id, router, user]);

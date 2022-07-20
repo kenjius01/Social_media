@@ -6,4 +6,4 @@ export const logIn = (formData: FormData) =>
     API.post('/auth/login', formData, { withCredentials: true });
 export const signUp = (formData: FormData) =>
     API.post('/auth/register', formData).then((res) => res.data);
-export const logout = () => API.post('/auth/logout');
+export const logout = () => API.post('/auth/logout',{ withCredentials: true });

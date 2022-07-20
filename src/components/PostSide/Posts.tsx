@@ -8,8 +8,8 @@ import Post from './Post';
 const Posts = () => {
     const dispatch = useDispatch();
     const user = useSelector((state: any) => state.authReducer.authData);
-    let { posts, loading } = useSelector((state: any) => state.postReducer);
-    const [userId, setUserId] = useState(user.id);
+    let { posts } = useSelector((state: any) => state.postReducer);
+    const [userId, setUserId] = useState(user?.id);
     const router = useRouter();
     if (router.query.id) {
         posts = posts.filter(
@@ -26,11 +26,9 @@ const Posts = () => {
     }, [dispatch, userId]);
     return (
         <div className='flex flex-col h-screen gap-4 overflow-x-hidden overflow-y-auto posts'>
-            {loading
-                ? 'Fetching Posts....'
-                : posts?.map((post: any, id: number) => (
-                      <Post key={id} post={post} />
-                  ))}
+            {posts?.map((post: any, id: number) => (
+                <Post key={id} post={post} />
+            ))}
         </div>
     );
 };

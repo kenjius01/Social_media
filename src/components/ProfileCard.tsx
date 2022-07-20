@@ -6,6 +6,7 @@ import avt from '../img/avt.jpg';
 import { getNumFollows, getUserInfo } from '../api/UserRequest';
 import { PostResponse, Userinfo } from '../pb/apiservice';
 import { useSelector } from 'react-redux';
+import Skeleton from 'react-loading-skeleton';
 
 const ProfileCard = () => {
     const router = useRouter();
@@ -14,6 +15,8 @@ const ProfileCard = () => {
     const [numFollowing, setNumFollowing] = useState<string>();
     const posts = useSelector((state: any) => state.postReducer.posts);
     const { id } = router.query;
+    const user = useSelector((state: any) => state.authReducer.authData);
+    const { loading } = useSelector((state: any) => state.authReducer);
 
     useEffect(() => {
         if (router.isReady) {
@@ -29,32 +32,40 @@ const ProfileCard = () => {
                 })
                 .catch((error) => console.log(error));
         }
-    }, [id, router]);
+    }, [id, router, user]);
 
     return (
         <div className='relative flex flex-col w-full overflow-auto profileCard bg-card-color rounded-3xl'>
             <div className='relative flex flex-col items-center profileImg'>
                 <div className='w-full h-full'>
-                    <Image
-                        width={'100%'}
-                        height='50%'
-                        layout='responsive'
-                        src={userInfo?.coverImg || Cover}
-                        className='object-cover'
-                        priority
-                        alt='cover'
-                    />
+                    {loading ? (
+                        <Skeleton height={'50%'} width='100%' />
+                    ) : (
+                        <Image
+                            width={'100%'}
+                            height='50%'
+                            layout='responsive'
+                            src={userInfo?.coverImg ? userInfo.coverImg : Cover}
+                            className='object-cover'
+                            priority
+                            alt='cover'
+                        />
+                    )}
                 </div>
                 <div className='relative w-28 top-[-3rem]'>
-                    <Image
-                        width='100%'
-                        height={'100%'}
-                        layout='responsive'
-                        src={userInfo?.avatar || avt}
-                        alt='profile'
-                        priority
-                        className='rounded-full '
-                    />
+                    {loading ? (
+                        <Skeleton circle width={'100%'} height='100%' />
+                    ) : (
+                        <Image
+                            width='100%'
+                            height={'100%'}
+                            layout='responsive'
+                            src={userInfo?.avatar ? userInfo.avatar : avt}
+                            alt='profile'
+                            priority
+                            className='object-cover rounded-full '
+                        />
+                    )}
                 </div>
             </div>
             <div className='flex flex-col items-center gap-2 profileName'>

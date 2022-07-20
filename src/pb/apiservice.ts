@@ -17,6 +17,6 @@ export interface PostResponse {
     desc: string;
     image: string;
     likes: number[];
-    CreatedAt: Date;
-    UpdatedAt: Date;
+    CreatedAt: string;
+    UpdatedAt: string;
 }
