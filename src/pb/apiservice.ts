@@ -20,3 +20,11 @@ export interface PostResponse {
     CreatedAt: string;
     UpdatedAt: string;
 }
+
+export interface FollowerInfo {
+    id: number;
+    avatar: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+}
